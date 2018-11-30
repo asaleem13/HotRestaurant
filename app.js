@@ -17,26 +17,62 @@ app.use(express.json());
 var reservations = [
     {
       name: "Yoda",
-      phone: "Jedi Master",
-      email: 900,
+      phone: "323-456-5963",
+      email: "carne@asada.com",
       id: 2000
     },
     {
-      routeName: "darthmaul",
-      name: "Darth Maul",
-      role: "Sith Lord",
-      age: 200,
-      forcePoints: 1200
+        name: "Yoda",
+      phone: "818-456-5963",
+      email: "dfsf@asada.com",
+      id: 2001
     },
     {
-      routeName: "obiwankenobi",
-      name: "Obi Wan Kenobi",
-      role: "Jedi Master",
-      age: 55,
-      forcePoints: 1350
+        name: "Yoda",
+      phone: "310-456-5963",
+      email: "gjgh@asada.com",
+      id: 2002
     }
   ];
 
+// Routes
+// =============================================================
+
+// Basic route that sends the user first to the AJAX Page
+app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "home.html"));
+  });
+  
+  app.get("/tables", function(req, res) {
+    res.sendFile(path.join(__dirname, "table.html"));
+  });
+
+  app.get("/reserve", function(req, res) {
+    res.sendFile(path.join(__dirname, "reserve.html"));
+  });
+  
+  // Displays all reservations
+  app.get("/api/reservations", function(req, res) {
+    return res.json(reservations);
+  });
+
+
+
+ // Create New Reservations - takes in JSON input
+app.post("/api/reservations", function(req, res) {
+    // req.body hosts is equal to the JSON post sent from the user
+    // This works because of our body parsing middleware
+    var newReservations = req.body;
+
+    newReservations.routeName = newReservations.name.replace(/\s+/g, "").toLowerCase();
+  
+    console.log(newReservations);
+  
+    reservations.push(newReservations);
+  
+    res.json(newReservations);
+  });
+   
 
 
 // Starts the server to begin listening
